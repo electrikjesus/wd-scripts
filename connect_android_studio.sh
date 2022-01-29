@@ -56,10 +56,10 @@ get_ip="ip addr show eth0  | grep 'inet ' | cut -d ' ' -f 6 | cut -d / -f 1"
 ip=$(echo $get_ip | sudo waydroid shell)
 # - connect to AS using ADB
 
-text=$(adb connect $ip:5555)
-string="already"
-if [[ $text == *"$string"* ]]; then
-	echo "$text"
+adb_command=$(adb connect $ip:5555)
+running="already"
+if [[ $adb_command == *"$running"* ]]; then
+	echo "$adb_command"
 	read -p "Do you want to disconnect ADB (y/n)?" choice
 	case "$choice" in 
 	  y|Y ) echo "yes" && adb disconnect $ip:5555 ;;
@@ -67,7 +67,7 @@ if [[ $text == *"$string"* ]]; then
 	  * ) echo "invalid";;
 	esac 
 else
-	echo "$text"
+	echo "$adb_command"
 fi
 
 # Done
