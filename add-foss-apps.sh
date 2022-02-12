@@ -37,6 +37,7 @@ case "$choice" in
 esac
 
 if [ "$install" == "true" ]; then
+	rm -rf $HPATH/.cache/wd-scripts/
 	mkdir $HPATH/.cache/wd-scripts/
 	cd $HPATH/.cache/wd-scripts/
 	git clone https://github.com/BlissRoms-x86/vendor_foss foss
