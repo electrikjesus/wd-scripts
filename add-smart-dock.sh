@@ -88,21 +88,16 @@ case "$choice" in
 esac
 
 if [ "$install" == "true" ]; then
-	sudo systemctl stop waydroid-container.service
-	sudo e2fsck -f /var/lib/waydroid/images/system.img
-	sudo resize2fs /var/lib/waydroid/images/system.img 2G
-	sudo mount -o loop /var/lib/waydroid/images/system.img /mnt
 
 	for i in $SYSAPP ; do
-		sudo rm -rf /mnt/$FILEPATH
-		sudo mkdir -p /mnt/$FILEPATH
-		sudo cp $PJFOLDER/assets/$SYSAPP /mnt/$FILEPATH
-		ls -a /mnt/$FILEPATH
-		sudo chmod 644 /mnt/$FILEPATH/
-		sudo chown root:root /mnt/$FILEPATH
+		sudo rm -rf /var/lib/waydroid/overlay/$FILEPATH
+		sudo mkdir -p /var/lib/waydroid/overlay/$FILEPATH
+		sudo cp $PJFOLDER/assets/$SYSAPP /var/lib/waydroid/overlay/$FILEPATH
+		ls -a /var/lib/waydroid/overlay/$FILEPATH
+		sudo chmod 644 /var/lib/waydroid/overlay/$FILEPATH/
+		sudo chown root:root /var/lib/waydroid/overlay/$FILEPATH
 	done
 
-	sudo umount /mnt
 	sudo systemctl restart waydroid-container.service
 	#~ waydroid session start &
 	read -p "Start waydroid service in a separate terminal and once running, come back here and press return"
