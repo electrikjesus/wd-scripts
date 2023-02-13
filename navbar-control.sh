@@ -10,6 +10,8 @@
 # author: Jon West [electrikjesus@gmail.com]
 
 nb_disabled=""
+enable="false"
+disable="false"
 
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   echo "purpose: "
@@ -38,20 +40,30 @@ do
 	fi
 done
 
+# Present Menu
+# If navbar is disabled
 if [ "$nb_disabled" ]; then
 	read -p "Navbar is disabled, do you want to enable it (y/n)?" choice
 	case "$choice" in 
-	  y|Y ) echo "yes" && sed -i '/qemu.hw.mainkeys=1/d' /var/lib/waydroid/waydroid_base.prop;;
+	  y|Y ) echo "yes" && enable="true";;
 	  n|N ) echo "no";;
 	  * ) echo "invalid";;
 	esac
+
+# Else, it must be enabled
 else
 	read -p "Navbar is enabled. Do you want to disable it (y/n)?" choice
 	case "$choice" in 
-	  y|Y ) echo "yes" && echo "qemu.hw.mainkeys=1" >> /var/lib/waydroid/waydroid_base.prop;;
+	  y|Y ) echo "yes" && disable="true";;
 	  n|N ) echo "no";;
 	  * ) echo "invalid";;
 	esac
 fi
+if [ "$enable" == "true" ]; then
+  sudo sh -c "sed -i '/qemu.hw.mainkeys=1/d' /var/lib/waydroid/waydroid_base.prop" && echo "All Set. Please restart container to see changes. Thanks for using!" || echo "Process Failed, please try again!"
+fi
+if [ "$disable" == "true" ]; then
+  sudo sh -c "echo 'qemu.hw.mainkeys=1' >> /var/lib/waydroid/waydroid_base.prop" && echo "All Set. Please restart container to see changes. Thanks for using!" || echo "Process Failed, please try again!"
+fi
 
-echo "All Set. Please restart container to see changes. Thanks for using!"
+
