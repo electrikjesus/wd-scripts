@@ -14,7 +14,10 @@ if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
 fi
 PJFOLDER=$PWD
 echo -e $PJFOLDER
+SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+echo -e "SCRIPTPATH: $SCRIPTPATH"
 HPATH=$HOME
+echo -e "HOME: $HPATH"
 FILEPATH="system/priv-app/SmartDock"
 SYSAPP="SmartDock.apk"
 PERMISSIONS="android.permission.ACCESS_COARSE_LOCATION
@@ -96,7 +99,7 @@ if [ "$install" == "true" ]; then
 	for i in $SYSAPP ; do
 		sudo rm -rf /mnt/$FILEPATH
 		sudo mkdir -p /mnt/$FILEPATH
-		sudo cp $PJFOLDER/assets/$SYSAPP /mnt/$FILEPATH
+		sudo cp $SCRIPTPATH/assets/$SYSAPP /mnt/$FILEPATH
 		ls -a /mnt/$FILEPATH
 		sudo chmod 644 /mnt/$FILEPATH/
 		sudo chown root:root /mnt/$FILEPATH
@@ -107,13 +110,14 @@ if [ "$install" == "true" ]; then
 	#~ waydroid session start &
 	read -p "Start waydroid service in a separate terminal and once running, come back here and press return"
 	sleep 20
-	sudo waydroid app install $PJFOLDER/assets/$SYSAPP
+	waydroid app install $SCRIPTPATH/assets/$SYSAPP
 	
 	
 	#~ sudo waydroid app remove cu.axel.smartdock
 	
 	for p in $PERMISSIONS ; do
-		echo "pm grant cu.axel.smartdock $p" | sudo -S waydroid shell 2> /dev/null
+#		echo "pm grant cu.axel.smartdock $p" | sudo -S waydroid shell 2> /dev/null
+		echo "pm grant cu.axel.smartdock $p" | sudo -S waydroid shell
 	done
 	
 	echo "settings put secure enabled_notification_listeners %nlisteners:cu.axel.smartdock/cu.axel.smartdock.service.ServiceNotificationIntercept" | sudo -S waydroid shell
