@@ -45,7 +45,7 @@ if [ "$install" == "true" ]; then
 	bash update.sh
 	shopt -s globstar
 	for f in bin/*.apk bin/**/*.apk ; do
-		sudo waydroid app install $f
+		waydroid app install $f
 	done
 	cd $PJFOLDER
 	echo "All set. No need to restart container, just verify things worked"
