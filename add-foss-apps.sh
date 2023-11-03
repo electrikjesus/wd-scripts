@@ -40,7 +40,7 @@ if [ "$install" == "true" ]; then
 	rm -rf $HPATH/.cache/wd-scripts/
 	mkdir $HPATH/.cache/wd-scripts/
 	cd $HPATH/.cache/wd-scripts/
-	git clone https://github.com/BlissRoms-x86/vendor_foss foss
+	git clone https://github.com/android-generic/vendor_foss foss
 	cd $HPATH/.cache/wd-scripts/foss/
 	bash update.sh
 	shopt -s globstar
